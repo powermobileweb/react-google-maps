@@ -1,0 +1,19 @@
+dist: trusty
+sudo: required
+language: node_js
+node_js:
+- '6'
+- '8'
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
+- npm run build:src
+script:
+- npm test -- --coverage
+after_script:
+- if [[ "$TRAVIS_PULL_REQUEST" == "false" && `node --version` == *v8* ]]; then ./cc-test-reporter
+  after-build --exit-code $TRAVIS_TEST_RESULT; fi
+env:
+  global:
+    secure: M75Bs+b2JGiCcfqguvV+r4+OtbFFj3rJj+ocNgMnrN34OSH/2enczdPkyHcMih3bVpmRpmlwx1sXIzbfNFh/nlLKs+mbYVeuB9a4J8us8iwrlxlfb2Q2DY/Go9ohaeMrHcs5VvmowLnQ9LBAkFaToYCVEPHyizU/h6iJtQmfipY=
